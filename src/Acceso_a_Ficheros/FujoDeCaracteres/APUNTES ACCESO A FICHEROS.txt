@@ -1,0 +1,88 @@
+FLUJO DE CARACTERES
+Podemos emplear dos clases abstractas:
+	-Reader
+	-Writer
+
+Para leer estos ficheros, lo hacemos mediante la clase READER.
+	Una forma de hacerlo es creando por un lado una clase en la que pondremos el 
+	método main y en la cual haremos una instancia de otra clase en la que tengamos
+	los distintos métodos para leer el fichero, y a su vez, con esa instancia  de
+	esa clase, llamaremos al método de esa clase propiamente dicha.
+	
+	Una vez creadas ambas clases(una con main y otra con métodos), buscamos la ruta
+	del archivo, empleando una "subclase" que pertenece a la librería 
+	Java.io.InputStreamReader. (En definitiva no importa de dónde venga, lo que nos 
+	interesa es que es capaz de buscarnos la ruta del archivo).
+	Con está subclase se genera una excepción que debemos controlar, la 
+	FileNotFoundException, que nos advierte de que no se ha podido encontrar el 
+	archivo. (La debemos recoger en un try catch)
+	Vamos al main y ahí creamos una instancia de la clase secundaria, que nos
+	permitirá utilizar el método de esta misma clase.
+
+	Hasta aquí, conseguimos ver si el fichero existe o no. Ahora toca leerlo:
+	
+	Leemos el fichero1, con el método read(), que pertenece también a la librería
+	Java.io.InputStreamReader. Este método lanza una excepción, que debemos capturar
+	mediante un catch.
+	A continuación debemos saber cuándo hemos llegado al final del fichero,
+	para ello debemos identificar el final del fichero de algún modo.
+	La única forma (que he encontrado) es la de almacenar la información del método
+	read() en una variable de tipo int a la cual, con un bucle while, comprobaremos
+	si es =-1 (lo cual nos indica que es el final del fichero).
+	Debemos recordar que dentro del while hay que leer de nuevo el fichero, por tanto
+	repetimos lo anterior y si además queremos imprimir el contenido del mismo, debemos 
+	pasar esa variable entera a un char (mediante un casting) e imprimir dicho char.
+	 
+	Puesto que hemos abierto un flujo de datos, hay que cerrarlo (se abre al utilizar
+	la clase FileReader). Se hace con el método close(), que se hereda de la clase
+	FileReader. Puesto que siempre se han de cerrar los flujos de datos, lo lógico
+	sería cerrarlo en un finally, pero en este caso, al únicamente abrir el flujo 
+	de datos en el try, lo lógico es cerrar el mismo al final del try.
+
+	(Hay una cosa curiosa que pasa al leer un fichero txt, y es que si no ponemos un
+	espacio al inicio del documento, la primera letra/caracter, no lo lee.)
+	(Solucionado: el orden de las líneas de código es importante. 
+	 Si lo colocamos de la siguiente manera lee el fichero correctamente:
+	  while(c!= -1)
+		{
+		char letra = (char) c; 
+		System.out.print(letra);
+		c = entrada_fichero.read();
+		}
+	 En cambio si lo colocamos:
+		    c= fichero1.read();
+                    char letra= (char)c;
+                    System.out.print(letra);
+	 El primer carater no nos lo imprime.)
+	(También hay otra opción y es que si antes del bucle while, en lugar de leer
+	 el fichero, igualamos c=0 ( ya que luego en el bucle while leemos el fichero de 
+	 nuevo) conseguimos que lea todos los caracteres correctamente).
+
+
+Para escribir sobre estos ficheros, empleamos la clase WRITER.
+	De la misma forma que con la clase Reader, dividimos en dos clases, por un lado el
+	main y por otro la clase con el método de escritura.
+	
+	Una vez creadas ambas clases, accedemos a la ruta del fichero que queremos escribir.
+	Dicho fichero puede estar creado ya o no (si el fichero lo tenemos creado debemos
+	añadir un true a continuación de la ruta del fichero,es decir, como segundo argumento,
+	lo cual nos indica que ese archivo existe y por consiguiente escribe a continuación
+	de lo anterior:
+	  FileWriter fichero2 = new FileWriter("J:\\JAVA\\AccesoDatos\\src\\Acceso_a_Ficheros\\FujoDeCaracteres\\fichero2.txt", true);  )
+
+	
+	En el método escribir, empleamos la clase FileWriter que nos lanza una excepción,
+	que recogemos en con un catch. A continuación creamos una variable de tipo String, 
+	por ejemplo, para poder guardar contenido dentro del fichero.
+	Puesto que no podemos almacenar strings con este método (de momento), debemos
+	recorrer con un for la variable String e ir almacenando caracter a caracter la 
+	información en el fichero.
+	Dentro del For, con el método write escribimos en el fichero, pero además, perteneciente
+	a los Strings, hay un método charAt que nos permite impirmir caracter a caracter 
+	segun indique la posicion de lectura del for.
+	 for (int i=0; i<frase.length(); i++)
+            {
+                fichero2.write(frase.charAt(i));//METODO CHAR AT DE I
+            }
+            fichero2.close();
+	
