@@ -61,9 +61,10 @@ public class Random1
         }
     }
 
-    public static void mostrarFichero() 
+    public static void mostrarFichero() throws IOException 
     {
         String n=" ";
+        int pepe;
         try
         {
             fichero.seek(0); //Nos coloca en la linea que queramos empezar a leer/escribir en el fichero
@@ -78,7 +79,7 @@ public class Random1
         } 
         catch (EOFException e) 
         {
-            System.out.println("Fin de fichero");
+            System.out.println("Fin de fichero" + fichero.readChar());
         } 
         catch (IOException ex)
         {
